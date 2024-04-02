@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Card</title>
+</head>
+<body>
+    <div id="userCard">
+        <button id="fetchUserData">Fetch User Data</button>
+    </div>
+
+    <script>
+        document.getElementById('fetchUserData').addEventListener('click', function () {
+            const requestUrl = 'https://api.github.com/users/hiteshchoudhary';
+            const xhr = new XMLHttpRequest();
+            
+            xhr.open('GET', requestUrl);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        const data = JSON.parse(xhr.responseText);
+                        const userCard = document.createElement('div');
+                        userCard.classList.add('user-card');
+
+                        const userAvatar = document.createElement('img');
+                        userAvatar.src = data.avatar_url;
+                        // userAvatar.alt = 'User Avatar';
+
+                        const userFollowers = document.createElement('p');
+                        userFollowers.textContent = `Followers: ${data.followers}`;
+
+                        const userFollowing = document.createElement('p');
+                        userFollowing.textContent = `Following: ${data.following}`;
+
+                        userCard.appendChild(userAvatar);
+                        userCard.appendChild(userFollowers);
+                        userCard.appendChild(userFollowing);
+
+                        document.getElementById('userCard').appendChild(userCard);
+                    }
+                }
+            }
+            
+            xhr.send();
+        });
+    </script>
+</body>
+</html>
